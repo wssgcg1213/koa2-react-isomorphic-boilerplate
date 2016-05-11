@@ -7,9 +7,14 @@
     "mocha": true
   },
   "ecmaFeatures": {
-    "arrowFunctions": true
+    "arrowFunctions": true,
+     "jsx": true
   },
   "rules": {
-    "func-style": [2, "declaration", { "allowArrowFunctions": true }]
-  }
+    "func-style": [2, "declaration", { "allowArrowFunctions": true }],
+    "no-unused-vars": 0
+  },
+  "plugins": [
+    "react"
+  ]
 }

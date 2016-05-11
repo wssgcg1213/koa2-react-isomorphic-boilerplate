@@ -1,15 +1,16 @@
 #!/usr/bin/env node
-var path = require('path')
+var Koa = require('koa')
+var app = new Koa()
+var middlewareRegister = require('../dist/middlewares')
+middlewareRegister(app) // reg middleware
+// error logger
+app.on('error', function (err, ctx) {
+  console.log('error occured:', err.stack)
+})
 
-try {
-  require(path.join(__dirname, '../app'))
-} catch (e) {
-  if (e && e.code === 'MODULE_NOT_FOUND') {
-    console.log('run `npm compile` first!')
-    process.exit(1)
-  }
-  console.log('app started with error and exited', e)
-  process.exit(1)
-}
-
-console.log('app started in production mode')
+var http = require('http')
+var config = require('../dist/config')
+var server = http.createServer(app.callback())
+server.listen(config.port, function () {
+  console.log('App started, at port %d, CTRL + C to terminate', config.port)
+})

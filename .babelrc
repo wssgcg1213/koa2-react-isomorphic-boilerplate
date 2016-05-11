@@ -1,6 +1,9 @@
 {
-  "presets": ["es2015-loose", "stage-3"],
+  "presets": ["es2015", "stage-0", "react"],
   "plugins": ["add-module-exports", "transform-runtime"],
-  "sourceMaps": true,
-  "retainLines": true
+  "env": {
+    "build": {
+      "optional": ["optimisation", "minification"]
+    }
+  }
 }
