@@ -43,5 +43,7 @@ app
 
 src/config/*
 !src/config/index.js
-!src/config/default.js.ideadist
+!src/config/default.js
+
+dist
 public/static/build
