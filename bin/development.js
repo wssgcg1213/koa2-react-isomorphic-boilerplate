@@ -1,33 +1,11 @@
 #!/usr/bin/env node
-
-// var _require = module.require
-// var path = require('path')
-// module.require = function (file) {
-//   console.log(file)
-//   if (path.extname(file).match(/less|css/)) {
-//     // return {}
-//   }
-//   return _require.apply(module, arguments)
-// }
-
-
+require('babel-polyfill')
 require('babel-core/register')({
   plugins: [
     ['babel-plugin-transform-require-ignore', {
       extensions: ['.less', '.css']
     }]
   ]
-  // ignore: function (filename) {
-  //   if (filename.match(/node_modules/)) {
-  //     return true
-  //   }
-
-  //   if (filename.match(/\.less$/)) {
-  //     return true
-  //   }
-  //   console.log('filename: %s', filename)
-  //   return false
-  // }
 })
 
 
@@ -35,22 +13,27 @@ var Koa = require('koa')
 var app = new Koa()
 var middlewareRegister = require('../src/middlewares')
 var webpack = require('webpack')
-var webpackDevMiddleware = require('koa-webpack-dev-middleware')
+var KWM = require('koa-webpack-middleware')
+var devMiddleware = KWM.devMiddleware
+var hotMiddleware = KWM.hotMiddleware
 var webpackConfig = require('../webpack.development')
 var convert = require('koa-convert')
 var compiler = webpack(webpackConfig)
-var webpackHotMiddleware = require('webpack-hot-middleware')(compiler)
 
-app.use(convert(webpackDevMiddleware(compiler, {
+app.use(devMiddleware(compiler, {
+  noInfo: true,
+  quiet: true,
   publicPath: '/static/build/',
   stats: {
     colors: true
   }
-})))
-app.use(convert(function * (next) {
-  yield webpackHotMiddleware.bind(null, this.req, this.res)
-  yield next
 }))
+app.use(hotMiddleware(compiler, {
+  log: console.log,
+  path: '/__webpack_hmr',
+  heartbeat: 10 * 1000
+}))
+
 middlewareRegister(app) // reg middleware
 // error logger
 app.on('error', function (err, ctx) {

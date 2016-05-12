@@ -6,7 +6,7 @@ class Layout extends Component {
   render () {
     return (
       <div>
-        <h2>React SSR Boilerplate</h2>
+        <h2>React ServerSideRender Boilerplate</h2>
         <Link to='/'>Home </Link>
         <Link to='/example'>Example link</Link>
         {this.props.children}

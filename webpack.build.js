@@ -103,7 +103,7 @@ module.exports = [{
         test: /\.(css|less)$/,
         exclude: /node_modules/,
         include: path.resolve(__dirname, 'src'),
-        loader: 'file'
+        loader: 'null'
       }, {
         test: /\.json$/, loader: 'json'
       }

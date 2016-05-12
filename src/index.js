@@ -2,10 +2,6 @@ var Koa = require('koa')
 var app = new Koa()
 var middlewareRegister = require('./middlewares')
 middlewareRegister(app) // reg middleware
-// error logger
-app.on('error', function (err, ctx) {
-  console.log('error occured:', err.stack)
-})
 
 var http = require('http')
 var config = require('./config')

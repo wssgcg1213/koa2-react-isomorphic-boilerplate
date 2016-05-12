@@ -19,14 +19,17 @@ export default async (ctx, next) => {
     if (redirectLocation) {
       ctx.redirect(redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
-      await ctx.render('index', {
+      const renderPage = process.env.NODE_ENV === 'development' ? 'index.dev.ejs' : 'index.ejs'
+      await ctx.render(renderPage, {
         title: 'React',
         app: renderToString(<RouterContext {...renderProps} />)
       })
     } else {
-      await ctx.throw(404, 'Not found')
+      await ctx.render('404')
     }
   } catch (e) {
-    await ctx.throw(500, e.message)
+    await ctx.render('500', {
+      msg: process.env.NODE_ENV === 'development' ? e.message : false
+    })
   }
 }

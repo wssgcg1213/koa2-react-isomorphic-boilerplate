@@ -7,11 +7,17 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = [{
   name: 'backend dev hot middlware',
-  entry: ['webpack-hot-middleware/client', './src/views/index.js'],
+  entry: [
+    // For old browsers
+    'eventsource-polyfill',
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    './src/views/index.js'
+  ],
   output: {
     path: path.join(__dirname, '/public/static/build'),
     filename: '[name].js',
-    chunkFilename: '[id].chunk.js'
+    chunkFilename: '[id].chunk.js',
+    publicPath: '/static/build/'
   },
 
   resolve: {
@@ -29,16 +35,23 @@ module.exports = [{
         test: /\.jsx|.js$/,
         exclude: /node_modules/,
         include: path.resolve(__dirname, 'src'),
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        query: {
+          'env': {
+            'development': {
+              'presets': ['react-hmre']
+            }
+          }
+        }
       }, {
         test: /\.css$/,
         include: path.resolve(__dirname, 'src'),
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
+        loader: 'style!css!postcss' // ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
       }, {
         test: /\.less$/,
         exclude: /node_modules/,
         include: path.resolve(__dirname, 'src'),
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
+        loader: 'style!css!postcss!less' // ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
       },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
         { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
@@ -58,7 +71,7 @@ module.exports = [{
     })
   ],
   plugins: [
-    new ExtractTextPlugin('all.min.css'),
+    // new ExtractTextPlugin('all.min.css'),
     new webpack.optimize.CommonsChunkPlugin('common', 'common.js'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
