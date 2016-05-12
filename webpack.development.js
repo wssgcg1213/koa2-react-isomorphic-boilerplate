@@ -2,11 +2,14 @@ var webpack = require('webpack')
 var path = require('path')
 var rucksack = require('rucksack-css')
 var autoprefixer = require('autoprefixer')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-module.exports = {
+module.exports = [{
+  name: 'backend dev hot middlware',
   entry: ['webpack-hot-middleware/client', './src/views/index.js'],
   output: {
-    path: path.join(__dirname, '/public/static'),
+    path: path.join(__dirname, '/public/static/build'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js'
   },
@@ -30,12 +33,12 @@ module.exports = {
       }, {
         test: /\.css$/,
         include: path.resolve(__dirname, 'src'),
-        loader: 'style!css!postcss'
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
       }, {
         test: /\.less$/,
         exclude: /node_modules/,
         include: path.resolve(__dirname, 'src'),
-        loader: 'style!css!postcss!less'
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
       },
       { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
         { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
@@ -55,6 +58,7 @@ module.exports = {
     })
   ],
   plugins: [
+    new ExtractTextPlugin('all.min.css'),
     new webpack.optimize.CommonsChunkPlugin('common', 'common.js'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -63,4 +67,5 @@ module.exports = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     })
   ]
-}
+}]
+

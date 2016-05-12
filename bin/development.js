@@ -1,5 +1,36 @@
 #!/usr/bin/env node
-require('babel-core/register')
+
+// var _require = module.require
+// var path = require('path')
+// module.require = function (file) {
+//   console.log(file)
+//   if (path.extname(file).match(/less|css/)) {
+//     // return {}
+//   }
+//   return _require.apply(module, arguments)
+// }
+
+
+require('babel-core/register')({
+  plugins: [
+    ['babel-plugin-transform-require-ignore', {
+      extensions: ['.less', '.css']
+    }]
+  ]
+  // ignore: function (filename) {
+  //   if (filename.match(/node_modules/)) {
+  //     return true
+  //   }
+
+  //   if (filename.match(/\.less$/)) {
+  //     return true
+  //   }
+  //   console.log('filename: %s', filename)
+  //   return false
+  // }
+})
+
+
 var Koa = require('koa')
 var app = new Koa()
 var middlewareRegister = require('../src/middlewares')
@@ -11,7 +42,7 @@ var compiler = webpack(webpackConfig)
 var webpackHotMiddleware = require('webpack-hot-middleware')(compiler)
 
 app.use(convert(webpackDevMiddleware(compiler, {
-  publicPath: '/static/js',
+  publicPath: '/static/build/',
   stats: {
     colors: true
   }

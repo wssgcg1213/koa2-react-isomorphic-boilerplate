@@ -1,16 +1,12 @@
 #!/usr/bin/env node
-var Koa = require('koa')
-var app = new Koa()
-var middlewareRegister = require('../dist/middlewares')
-middlewareRegister(app) // reg middleware
-// error logger
-app.on('error', function (err, ctx) {
-  console.log('error occured:', err.stack)
-})
+var fs = require('fs')
+var path = require('path')
+try {
+  fs.statSync(path.join(__dirname, '../dist'))
+} catch (e) {
+  console.log(e)
+  console.error('pls run `npm run build` first!')
+  process.exit(0)
+}
 
-var http = require('http')
-var config = require('../dist/config')
-var server = http.createServer(app.callback())
-server.listen(config.port, function () {
-  console.log('App started, at port %d, CTRL + C to terminate', config.port)
-})
+require('../dist')

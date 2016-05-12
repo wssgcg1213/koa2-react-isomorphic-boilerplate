@@ -1,31 +1,15 @@
-import app from './app'
-import http from 'http'
-import config from './config'
-
-const port = parseInt(config.port || '3000')
-const server = http.createServer(app.callback())
-
-server.listen(port)
-server.on('error', (error) => {
-  if (error.syscall !== 'listen') {
-    throw error
-  }
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(port + ' requires elevated privileges')
-      process.exit(1)
-      break
-    case 'EADDRINUSE':
-      console.error(port + ' is already in use')
-      process.exit(1)
-      break
-    default:
-      throw error
-  }
-})
-server.on('listening', () => {
-  console.log('Listening on port: %d', port)
+var Koa = require('koa')
+var app = new Koa()
+var middlewareRegister = require('./middlewares')
+middlewareRegister(app) // reg middleware
+// error logger
+app.on('error', function (err, ctx) {
+  console.log('error occured:', err.stack)
 })
 
-export default server
+var http = require('http')
+var config = require('./config')
+var server = http.createServer(app.callback())
+server.listen(config.port, function () {
+  console.log('App started, at port %d, CTRL + C to terminate', config.port)
+})
