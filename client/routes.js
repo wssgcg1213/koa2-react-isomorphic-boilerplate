@@ -1,5 +1,5 @@
-import App from '../../views/App'
-import PageExapmle from '../../views/pages/example'
+import App from './App'
+import PageExapmle from './pages/example'
 import { Router, Route, Redirect, browserHistory } from 'react-router'
 import React from 'react'
 

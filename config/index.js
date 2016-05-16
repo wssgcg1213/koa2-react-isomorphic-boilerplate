@@ -6,10 +6,11 @@
 import fs from 'fs'
 import lodash, { isPlainObject, defaultsDeep } from 'lodash'
 import defaultConfig from './default'
+const debug = require('debug')('config')
 
 const cfgs = []
 fs.readdirSync(__dirname).map(filename => {
-  if (filename === 'index.js') {
+  if (['index.js', 'default.js'].indexOf(filename) > -1 || filename[0] === '.') {
     return false
   }
   try {
@@ -20,6 +21,7 @@ fs.readdirSync(__dirname).map(filename => {
   } catch (e) {}
 })
 cfgs.push(defaultConfig)
-
 const config = defaultsDeep.apply(lodash, cfgs)
+
+debug(config)
 export default config

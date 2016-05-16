@@ -14,13 +14,13 @@ function _match (location) {
 }
 export default async (ctx, next) => {
   try {
-    const {redirectLocation, renderProps} = await _match({ routes: require('./routes'), location: ctx.url })
+    const {redirectLocation, renderProps} = await _match({ routes: require('../../client/routes'), location: ctx.url })
     if (redirectLocation) {
       ctx.redirect(redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
-      const renderPage = ctx.app.env === 'development' ? 'index.dev.ejs' : 'index.ejs'
-      await ctx.render(renderPage, {
+      await ctx.render('index', {
         title: 'React',
+        dev: ctx.app.env === 'development',
         app: renderToString(<RouterContext {...renderProps} />)
       })
     } else {
@@ -28,7 +28,7 @@ export default async (ctx, next) => {
     }
   } catch (e) {
     await ctx.render('500', {
-      msg: process.env.NODE_ENV === 'development' ? e.message : false
+      msg: ctx.app.env === 'development' ? e.message : false
     })
   }
 }

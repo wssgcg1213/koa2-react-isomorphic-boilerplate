@@ -2,8 +2,11 @@ var webpack = require('webpack')
 var path = require('path')
 var rucksack = require('rucksack-css')
 var autoprefixer = require('autoprefixer')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var includes = [
+  path.resolve(__dirname, 'client'),
+  path.resolve(__dirname, 'server'),
+  path.resolve(__dirname, 'config')
+]
 
 module.exports = {
   name: 'backend dev hot middlware',
@@ -11,15 +14,14 @@ module.exports = {
     // For old browsers
     'eventsource-polyfill',
     'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
-    './src/views/index.js'
+    './client/index.js'
   ],
   output: {
-    path: path.join(__dirname, '/public/static/build'),
+    path: path.join(__dirname, '/public/static'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
-    publicPath: '/static/build/'
+    publicPath: '/static/'
   },
-
   resolve: {
     modulesDirectories: ['node_modules', path.join(__dirname, '/node_modules')],
     extensions: ['', '.js', '.jsx']
@@ -34,7 +36,7 @@ module.exports = {
       {
         test: /\.jsx|.js$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
+        include: includes,
         loader: 'babel-loader',
         query: {
           'env': {
@@ -45,13 +47,13 @@ module.exports = {
         }
       }, {
         test: /\.css$/,
-        include: path.resolve(__dirname, 'src'),
-        loader: 'style!css!postcss' // ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
+        include: includes,
+        loader: 'style!css!postcss'
       }, {
         test: /\.less$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
-        loader: 'style!css!postcss!less' // ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
+        include: includes,
+        loader: 'style!css!postcss!less'
       },
       { test: /\.woff2?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
       { test: /\.ttf$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
@@ -70,7 +72,6 @@ module.exports = {
     })
   ],
   plugins: [
-    // new ExtractTextPlugin('all.min.css'),
     new webpack.optimize.CommonsChunkPlugin('common', 'common.js'),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),

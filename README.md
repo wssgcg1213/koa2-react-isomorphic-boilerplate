@@ -23,6 +23,17 @@ http://127.0.0.1:3000/
 
 
 
+## 目录结构
+
+- bin
+- client
+- server
+- ​
+
+
+
+
+
 ## Unfinished YET!
 
 你问我资瓷不资瓷!

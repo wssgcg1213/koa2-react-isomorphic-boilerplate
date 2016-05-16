@@ -1,7 +1,8 @@
+require('babel-core/register')
+var config = require('./config')
 var webpack = require('webpack')
 var path = require('path')
 var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
-var CopyWebpackPlugin = require('copy-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var rucksack = require('rucksack-css')
 var autoprefixer = require('autoprefixer')
@@ -10,45 +11,54 @@ var nodeModules = fs.readdirSync('node_modules')
   .filter(function (i) {
     return ['.bin', '.npminstall'].indexOf(i) === -1
   })
+var includes = [
+  path.resolve(__dirname, 'client'),
+  path.resolve(__dirname, 'server'),
+  path.resolve(__dirname, 'config')
+]
 
 module.exports = [{
   name: 'browser side render',
   devtool: 'cheap-source-map',
-  entry: [
-    './src/views/index.js'
-  ],
+  entry: ['./client/index.js'],
   output: {
-    path: path.join(__dirname, '/public/static/build'),
+    path: config.rootPath + config.staticPath,
     filename: '[name].js',
-    publicPath: '/static/build/'
+    publicPath: '/static/'
   },
   module: {
     loaders: [
       {
-        test: /\.jsx|.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
+        include: includes,
         loader: 'babel-loader'
       }, {
         test: /\.css$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
+        include: includes,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
       }, {
         test: /\.less$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
+        include: includes,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
       },
       { test: /\.woff2?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
       { test: /\.ttf$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
       { test: /\.eot$/, loader: 'file' },
       { test: /\.svg$/, loader: 'url?limit=10000&minetype=image/svg+xml' },
-      { test: /\.(png|jpg|jpeg|gif)$/i, loader: 'url?limit=10000' },
+      { test: /\.(png|jpg|jpeg|gif|webp)$/i, loader: 'url?limit=10000' },
       { test: /\.json$/, loader: 'json' },
       { test: /\.html?$/, loader: 'file?name=[name].[ext]' }
     ]
   },
+  postcss: [
+    rucksack(),
+    autoprefixer({
+      browsers: ['last 2 versions', 'Firefox ESR', '> 1%', 'ie >= 8']
+    })
+  ],
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
@@ -57,26 +67,20 @@ module.exports = [{
     new webpack.optimize.CommonsChunkPlugin('common', 'common.js'),
     new webpack.optimize.DedupePlugin(),
     new UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+      compress: { warnings: false }
     }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
+      'process.env': { NODE_ENV: JSON.stringify('production') }
     })
   ]
 }, {
   name: 'server side render',
   devtool: 'cheap-source-map',
-  entry: [
-    './src/index.js'
-  ],
+  entry: ['./server/index.js'],
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'index.js',
-    publicPath: '/static/build/',
+    publicPath: '/static/',
     libraryTarget: 'commonjs2'
   },
   target: 'node',
@@ -99,19 +103,19 @@ module.exports = [{
       {
         test: /\.jsx|.js$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
+        include: includes,
         loader: 'babel-loader'
       }, {
         test: /\.(css|less)$/,
         exclude: /node_modules/,
-        include: path.resolve(__dirname, 'src'),
+        include: includes,
         loader: 'null'
       },
       { test: /\.woff2?$/, loader: 'null' },
       { test: /\.ttf$/, loader: 'null' },
       { test: /\.eot$/, loader: 'null' },
       { test: /\.svg$/, loader: 'null' },
-      { test: /\.(png|jpg|jpeg|gif)$/i, loader: 'url?limit=10000' },
+      { test: /\.(png|jpg|jpeg|gif|webp)$/i, loader: 'url?limit=10000' },
       { test: /\.json$/, loader: 'json' }
     ]
   },
@@ -122,14 +126,10 @@ module.exports = [{
   plugins: [
     new webpack.optimize.DedupePlugin(),
     new UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
+      compress: { warnings: false }
     }),
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
+      'process.env': { NODE_ENV: JSON.stringify('production') }
     })
   ]
 }]

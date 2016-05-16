@@ -6,7 +6,9 @@ import koaStatic from 'koa-static-plus'
 import koaOnError from 'koa-onerror'
 import convert from 'koa-convert'
 import Bodyparser from 'koa-bodyparser'
+import config from '../../config'
 const bodyparser = Bodyparser()
+const templatePath = path.join(__dirname, '../templates')
 
 export default (app) => {
   // reg middlewares
@@ -15,22 +17,22 @@ export default (app) => {
   app.use(convert(logger()))
 
   // static serve
-  app.use(convert(koaStatic(path.join(__dirname, '../../public'))))
+  app.use(convert(koaStatic(config.rootPath + config.publicPath)))
 
   // template ejs
-  app.use(views(path.join(__dirname, '../../views'), { extension: 'ejs' }))
+  app.use(views(templatePath, { extension: 'ejs' }))
 
   app.use(async (ctx, next) => {
     // api server through koa-router
     if (ctx.path.match(/^\/api/)) {
-      return await require('../routes/koa-router').routes()(ctx, next)
+      return await require('../routes/koa-routes').routes()(ctx, next)
     }
     // others react-router
-    await require('../routes/react-router')(ctx, next)
+    await require('../routes/react-routes')(ctx, next)
   })
 
   // 500 error
-  koaOnError(app, { template: 'views/500.ejs' })
+  koaOnError(app, { template: templatePath + '/500.ejs' })
 
   // logger
   if (app.env === 'development') {
@@ -41,7 +43,7 @@ export default (app) => {
       console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
     })
   }
-  
+
   // 404
   app.use(async (ctx) => {
     ctx.status = 404
