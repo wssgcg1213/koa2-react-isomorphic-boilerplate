@@ -1,7 +1,6 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { match, RouterContext } from 'react-router'
-import routes from './routes'
 
 function _match (location) {
   return new Promise((resolve, reject) => {
@@ -15,11 +14,11 @@ function _match (location) {
 }
 export default async (ctx, next) => {
   try {
-    const {redirectLocation, renderProps} = await _match({ routes, location: ctx.url })
+    const {redirectLocation, renderProps} = await _match({ routes: require('./routes'), location: ctx.url })
     if (redirectLocation) {
       ctx.redirect(redirectLocation.pathname + redirectLocation.search)
     } else if (renderProps) {
-      const renderPage = process.env.NODE_ENV === 'development' ? 'index.dev.ejs' : 'index.ejs'
+      const renderPage = ctx.app.env === 'development' ? 'index.dev.ejs' : 'index.ejs'
       await ctx.render(renderPage, {
         title: 'React',
         app: renderToString(<RouterContext {...renderProps} />)

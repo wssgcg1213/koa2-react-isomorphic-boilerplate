@@ -5,7 +5,7 @@ var autoprefixer = require('autoprefixer')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-module.exports = [{
+module.exports = {
   name: 'backend dev hot middlware',
   entry: [
     // For old browsers
@@ -21,12 +21,12 @@ module.exports = [{
   },
 
   resolve: {
-    modulesDirectories: ['node_modules', path.join(__dirname, '../node_modules')],
+    modulesDirectories: ['node_modules', path.join(__dirname, '/node_modules')],
     extensions: ['', '.js', '.jsx']
   },
 
   resolveLoader: {
-    modulesDirectories: ['node_modules', path.join(__dirname, '../node_modules')]
+    modulesDirectories: ['node_modules', path.join(__dirname, '/node_modules')]
   },
 
   module: {
@@ -53,14 +53,13 @@ module.exports = [{
         include: path.resolve(__dirname, 'src'),
         loader: 'style!css!postcss!less' // ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
       },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
-        { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
-        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
-        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=image/svg+xml' },
-        { test: /\.(png|jpg|jpeg|gif)(\?v=\d+\.\d+\.\d+)?$/i, loader: 'url?limit=10000' },
-        { test: /\.json$/, loader: 'json' },
-        { test: /\.html?$/, loader: 'file?name=[name].[ext]' }
+      { test: /\.woff2?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
+      { test: /\.ttf$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
+      { test: /\.eot$/, loader: 'file' },
+      { test: /\.svg$/, loader: 'url?limit=10000&minetype=image/svg+xml' },
+      { test: /\.(png|jpg|jpeg|gif)$/i, loader: 'url?limit=10000&name=[name].[ext]' },
+      { test: /\.json$/, loader: 'json' },
+      { test: /\.html?$/, loader: 'file?name=[name].[ext]' }
     ]
   },
 
@@ -77,8 +76,8 @@ module.exports = [{
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      'process.env.NODE_ENV': JSON.stringify('development')
     })
   ]
-}]
+}
 

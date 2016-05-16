@@ -19,7 +19,8 @@ module.exports = [{
   ],
   output: {
     path: path.join(__dirname, '/public/static/build'),
-    filename: '[name].js'
+    filename: '[name].js',
+    publicPath: '/static/build/'
   },
   module: {
     loaders: [
@@ -39,14 +40,13 @@ module.exports = [{
         include: path.resolve(__dirname, 'src'),
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
       },
-      { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
-        { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
-        { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
-        { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: 'file' },
-        { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&minetype=image/svg+xml' },
-        { test: /\.(png|jpg|jpeg|gif)(\?v=\d+\.\d+\.\d+)?$/i, loader: 'url?limit=10000' },
-        { test: /\.json$/, loader: 'json' },
-        { test: /\.html?$/, loader: 'file?name=[name].[ext]' }
+      { test: /\.woff2?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
+      { test: /\.ttf$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
+      { test: /\.eot$/, loader: 'file' },
+      { test: /\.svg$/, loader: 'url?limit=10000&minetype=image/svg+xml' },
+      { test: /\.(png|jpg|jpeg|gif)$/i, loader: 'url?limit=10000' },
+      { test: /\.json$/, loader: 'json' },
+      { test: /\.html?$/, loader: 'file?name=[name].[ext]' }
     ]
   },
   resolve: {
@@ -75,7 +75,9 @@ module.exports = [{
   ],
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'index.js'
+    filename: 'index.js',
+    publicPath: '/static/build/',
+    libraryTarget: 'commonjs2'
   },
   target: 'node',
   node: {
@@ -104,9 +106,13 @@ module.exports = [{
         exclude: /node_modules/,
         include: path.resolve(__dirname, 'src'),
         loader: 'null'
-      }, {
-        test: /\.json$/, loader: 'json'
-      }
+      },
+      { test: /\.woff2?$/, loader: 'null' },
+      { test: /\.ttf$/, loader: 'null' },
+      { test: /\.eot$/, loader: 'null' },
+      { test: /\.svg$/, loader: 'null' },
+      { test: /\.(png|jpg|jpeg|gif)$/i, loader: 'url?limit=10000' },
+      { test: /\.json$/, loader: 'json' }
     ]
   },
   resolve: {

@@ -8,5 +8,5 @@ try {
   console.error('pls run `npm run build` first!')
   process.exit(0)
 }
-
+process.env.NODE_ENV = 'production'
 require('../dist')
