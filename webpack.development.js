@@ -20,7 +20,7 @@ module.exports = {
     path: path.join(__dirname, '/public/static'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
-    publicPath: '/static/'
+    publicPath: '/build/'
   },
   resolve: {
     modulesDirectories: ['node_modules', path.join(__dirname, '/node_modules')],
@@ -39,21 +39,22 @@ module.exports = {
         include: includes,
         loader: 'babel-loader',
         query: {
-          'env': {
-            'development': {
-              'presets': ['react-hmre']
-            }
-          }
+          presets: ['react-hmre'],
+          plugins: [
+            ["inline-replace-varibles", {
+              "__SERVER__": false
+            }]
+          ]
         }
       }, {
         test: /\.css$/,
-        include: includes,
+        // loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
         loader: 'style!css!postcss'
       }, {
         test: /\.less$/,
-        exclude: /node_modules/,
         include: includes,
-        loader: 'style!css!postcss!less'
+        // loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
+        loader: 'style!css!less!postcss'
       },
       { test: /\.woff2?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
       { test: /\.ttf$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
@@ -74,11 +75,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin('common', 'common.js'),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development')
-    })
+    new webpack.HotModuleReplacementPlugin()
   ]
 }
 

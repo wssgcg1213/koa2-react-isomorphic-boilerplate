@@ -22,9 +22,9 @@ module.exports = [{
   devtool: 'cheap-source-map',
   entry: ['./client/index.js'],
   output: {
-    path: config.rootPath + config.staticPath,
+    path: 'public/build',
     filename: '[name].js',
-    publicPath: '/static/'
+    publicPath: '/build/'
   },
   module: {
     loaders: [
@@ -35,14 +35,11 @@ module.exports = [{
         loader: 'babel-loader'
       }, {
         test: /\.css$/,
-        exclude: /node_modules/,
-        include: includes,
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
       }, {
         test: /\.less$/,
-        exclude: /node_modules/,
         include: includes,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader', 'less-loader')
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'less-loader', 'postcss-loader')
       },
       { test: /\.woff2?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
       { test: /\.ttf$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
@@ -70,7 +67,8 @@ module.exports = [{
       compress: { warnings: false }
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') }
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      __SERVER__: false
     })
   ]
 }, {
@@ -80,7 +78,7 @@ module.exports = [{
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'index.js',
-    publicPath: '/static/',
+    publicPath: '/build/',
     libraryTarget: 'commonjs2'
   },
   target: 'node',
@@ -94,21 +92,26 @@ module.exports = [{
       var pathStart = request.split('/')[0]
       if (pathStart && (pathStart[0] === '!') || nodeModules.indexOf(pathStart) >= 0 && request !== 'webpack/hot/signal.js') {
         return callback(null, 'commonjs ' + request)
-      };
+      }
       callback()
     }
   ],
   module: {
     loaders: [
       {
-        test: /\.jsx|.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         include: includes,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
+        query: {
+          plugins: [
+            ["babel-plugin-transform-require-ignore", {
+              "extensions": [".less", ".css"]
+            }]
+          ]
+        }
       }, {
         test: /\.(css|less)$/,
-        exclude: /node_modules/,
-        include: includes,
         loader: 'null'
       },
       { test: /\.woff2?$/, loader: 'null' },
@@ -129,7 +132,8 @@ module.exports = [{
       compress: { warnings: false }
     }),
     new webpack.DefinePlugin({
-      'process.env': { NODE_ENV: JSON.stringify('production') }
+      'process.env.NODE_ENV': JSON.stringify('production'),
+      __SERVER__: true
     })
   ]
 }]

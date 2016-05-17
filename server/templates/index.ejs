@@ -3,15 +3,17 @@
   <head>
     <title><%= title %></title>
     <% if (!dev) { %>
-    <link rel='stylesheet' href='/static/all.min.css' />
+    <link rel='stylesheet' href='/build/all.min.css' />
     <% } %>
   </head>
   <body>
     <section role="main" class="react-container">
       <div><%- app %></div>
     </section>
-    
-    <script src="/static/common.js"></script>
-    <script src="/static/main.js"></script>
+    <script>
+      window.__REDUX_STATE__ = JSON.parse('<%- JSON.stringify(reduxData) %>');
+    </script>
+    <script src="/build/common.js"></script>
+    <script src="/build/main.js"></script>
   </body>
 </html>

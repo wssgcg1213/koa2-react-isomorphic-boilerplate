@@ -1,12 +1,12 @@
 {
-  "name": "koa2-react-server-side-render-boilerplate",
-  "version": "0.1.0",
+  "name": "koa2-react-isomorphic-boilerplate",
+  "version": "0.2.0",
   "author": "wssgcg1213",
   "scripts": {
     "start": "NODE_ENV=development node bin/development.js",
     "production": "NODE_ENV=production node bin/production.js",
-    "build": "NODE_ENV=build npm run clean && webpack --config webpack.build.js ",
-    "clean": "rm -rf public/static/ && rm -rf dist/",
+    "build": "NODE_ENV=production npm run clean && webpack --config webpack.build.js ",
+    "clean": "rm -rf public/build/ && rm -rf dist/",
     "test": "mocha -u bdd --compilers js:babel-core/register",
     "dev": "npm start"
   },
@@ -23,6 +23,7 @@
     "debug": "^2.2.0",
     "ejs": "^2.4.1",
     "eslint": "^2.9.0",
+    "isomorphic-fetch": "^2.2.1",
     "koa": "^2.0.0",
     "koa-bodyparser": "^2.0.1",
     "koa-convert": "^1.2.0",
@@ -35,15 +36,21 @@
     "koa-views": "^5.0.1",
     "koa-webpack-dev-middleware": "^1.2.1",
     "lodash": "^4.11.1",
+    "normalize.css": "^4.1.1",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
-    "react-router": "^2.4.0"
+    "react-redux": "^4.4.5",
+    "react-router": "^2.4.0",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.1.0"
   },
   "devDependencies": {
     "asset-require-hook": "^1.0.2",
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
+    "babel-plugin-define": "^1.0.0",
+    "babel-plugin-inline-replace-varibles": "^1.0.0",
     "babel-plugin-transform-require-ignore": "^0.0.2",
     "babel-polyfill": "^6.8.0",
     "babel-preset-react-hmre": "^1.1.1",
@@ -74,5 +81,10 @@
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0"
-  }
+  },
+  "repository": {
+    "type": "github",
+    "url": "wssgcg1213/koa2-react-isomorphic-boilerplate"
+  },
+  "license": "MIT"
 }

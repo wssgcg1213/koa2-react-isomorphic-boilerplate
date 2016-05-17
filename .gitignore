@@ -32,18 +32,15 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
-# app // compiled js
-app
-
 # VSCODE 
 .vscode
 
 # JETBRAIN
 .idea
 
-src/config/*
-!src/config/index.js
-!src/config/default.js
+config/*
+!config/index.js
+!config/default.js
 
 dist
-public/static/build
+public/build

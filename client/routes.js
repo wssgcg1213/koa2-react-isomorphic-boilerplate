@@ -1,14 +1,12 @@
-import App from './App'
-import PageExapmle from './pages/example'
-import { Router, Route, Redirect, browserHistory } from 'react-router'
+import App from './containers/App'
+import Picture from './components/Picture'
+import Counter from './containers/Counter'
+import { Route } from 'react-router'
 import React from 'react'
 
 export default (
-<Router history={browserHistory}>
-  <Route path="/" component={App}>
-    <Route path="example" component={PageExapmle}>
-      <Redirect from="example-redirect" to="/example" />
-    </Route>
-  </Route>
-</Router>
+<Route path="/" component={App}>
+  <Route path="picture" component={Picture} />
+  <Route path="counter" component={Counter} />
+</Route>
 )

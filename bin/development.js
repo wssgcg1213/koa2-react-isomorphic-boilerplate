@@ -5,19 +5,22 @@ require('babel-core/register')({
   plugins: [
     ['babel-plugin-transform-require-ignore', {
       extensions: ['.less', '.css']
+    }],
+    ['inline-replace-varibles', {
+      __SERVER__: true
     }]
   ]
 })
 require('asset-require-hook')({
   extensions: ['jpg', 'jpeg', 'png', 'gif', 'svg', 'tif', 'tiff', 'webp'],
-  name: '/static/[name].[ext]',
+  name: '/build/[name].[ext]',
   limit: 10000
 })
 
 var Koa = require('koa')
 var app = new Koa()
 var path = require('path')
-var middlewareRegister = require('../server/middlewares')
+var middlewareRegister = require('../server/middlewareRegister')
 var webpack = require('webpack')
 var KWM = require('koa-webpack-middleware')
 var devMiddleware = KWM.devMiddleware
@@ -32,7 +35,7 @@ var devMiddlewareInstance = devMiddleware(compiler, {
     aggregateTimeout: 300,
     poll: true
   },
-  publicPath: '/static/',
+  publicPath: '/build/',
   stats: {
     colors: true
   }
