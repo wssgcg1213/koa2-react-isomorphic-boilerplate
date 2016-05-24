@@ -1,9 +1,10 @@
 require('babel-core/register')
-var config = require('./config')
+var config = require('./platforms/common/config')
 var webpack = require('webpack')
 var path = require('path')
 var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var extractStyle = new ExtractTextPlugin('all.min.css')
 var rucksack = require('rucksack-css')
 var autoprefixer = require('autoprefixer')
 var fs = require('fs')
@@ -12,15 +13,14 @@ var nodeModules = fs.readdirSync('node_modules')
     return ['.bin', '.npminstall'].indexOf(i) === -1
   })
 var includes = [
-  path.resolve(__dirname, 'client'),
-  path.resolve(__dirname, 'server'),
-  path.resolve(__dirname, 'config')
+  path.resolve(__dirname, 'app'),
+  path.resolve(__dirname, 'platforms')
 ]
 
 module.exports = [{
   name: 'browser side render',
   devtool: 'cheap-source-map',
-  entry: ['./client/index.js'],
+  entry: ['./platforms/browser/index.js'],
   output: {
     path: 'public/build',
     filename: '[name].js',
@@ -35,11 +35,11 @@ module.exports = [{
         loader: 'babel-loader'
       }, {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'postcss-loader')
+        loader: extractStyle.extract(['css', 'postcss'])
       }, {
         test: /\.less$/,
         include: includes,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader', 'less-loader', 'postcss-loader')
+        loader: extractStyle.extract(['css', 'less', 'postcss'])
       },
       { test: /\.woff2?$/, loader: 'url?limit=10000&minetype=application/font-woff' },
       { test: /\.ttf$/, loader: 'url?limit=10000&minetype=application/octet-stream' },
@@ -60,7 +60,7 @@ module.exports = [{
     extensions: ['', '.js', '.jsx']
   },
   plugins: [
-    new ExtractTextPlugin('all.min.css'),
+    extractStyle,
     new webpack.optimize.CommonsChunkPlugin('common', 'common.js'),
     new webpack.optimize.DedupePlugin(),
     new UglifyJsPlugin({
@@ -74,7 +74,7 @@ module.exports = [{
 }, {
   name: 'server side render',
   devtool: 'cheap-source-map',
-  entry: ['./server/index.js'],
+  entry: ['./platforms/server/index.js'],
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'index.js',

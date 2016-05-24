@@ -6,7 +6,8 @@ import koaStatic from 'koa-static-plus'
 import koaOnError from 'koa-onerror'
 import convert from 'koa-convert'
 import Bodyparser from 'koa-bodyparser'
-import config from '../config'
+import router from './routes'
+import config from '../common/config'
 const bodyparser = Bodyparser()
 const templatePath = path.join(__dirname, './templates')
 
@@ -22,14 +23,8 @@ export default (app) => {
   // template ejs
   app.use(views(templatePath, { extension: 'ejs' }))
 
-  app.use(async (ctx, next) => {
-    // api server through koa-router
-    if (ctx.path.match(/^\/api/)) {
-      return await require('./routes/koa-routes').routes()(ctx, next)
-    }
-    // others react-router
-    await require('./routes/react-routes')(ctx, next)
-  })
+  // router dispatcher
+  app.use(router)
 
   // 500 error
   koaOnError(app, { template: templatePath + '/500.ejs' })

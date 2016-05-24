@@ -20,7 +20,7 @@ require('asset-require-hook')({
 var Koa = require('koa')
 var app = new Koa()
 var path = require('path')
-var middlewareRegister = require('../server/middlewareRegister')
+var middlewareRegister = require('../platforms/server/middlewareRegister')
 var webpack = require('webpack')
 var KWM = require('koa-webpack-middleware')
 var devMiddleware = KWM.devMiddleware
@@ -28,7 +28,7 @@ var hotMiddleware = KWM.hotMiddleware
 var chokidar = require('chokidar')
 var webpackConfig = require('../webpack.development')
 var compiler = webpack(webpackConfig)
-var config = require('../config')
+var config = require('../platforms/common/config')
 var devMiddlewareInstance = devMiddleware(compiler, {
   noInfo: true,
   watchOptions: {
@@ -58,15 +58,14 @@ app.on('error', function (err, ctx) {
 // listen
 var server = require('http').createServer(app.callback())
 var watcher = chokidar.watch([
-  path.join(__dirname, '../server'),
-  path.join(__dirname, '../client'),
-  path.join(__dirname, '../config')
+  path.join(__dirname, '../app'),
+  path.join(__dirname, '../platforms')
 ])
 watcher.on('ready', function () {
   watcher.on('all', function (e, p) {
     console.log("Clearing module cache");
     Object.keys(require.cache).forEach(function(id) {
-      if (/[\/\\](client|server|config)[\/\\]/.test(id)) delete require.cache[id];
+      if (/[\/\\](app|platforms)[\/\\]/.test(id)) delete require.cache[id];
     });
   })
 })

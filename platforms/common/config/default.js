@@ -12,9 +12,10 @@ export default {
   staticPath: '/public/static',
   port: 3000,
   db: {
-    host: 'localhost',
-    database: 'dbname',
-    username: 'root',
-    password: ''
+    dialect: 'sqlite',
+    username: '',
+    password: '',
+    database: 'main',
+    storage: 'path/to/db.sqlite'
   }
 }
