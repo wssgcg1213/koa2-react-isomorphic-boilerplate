@@ -1,6 +1,6 @@
 {
   "name": "koa2-react-isomorphic-boilerplate",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "wssgcg1213",
   "scripts": {
     "start": "NODE_ENV=development node bin/development.js",
@@ -50,7 +50,7 @@
     "babel-eslint": "^6.0.4",
     "babel-loader": "^6.2.4",
     "babel-plugin-define": "^1.0.0",
-    "babel-plugin-inline-replace-varibles": "^1.0.0",
+    "babel-plugin-inline-replace-variables": "^1.0.1",
     "babel-plugin-transform-require-ignore": "^0.0.2",
     "babel-polyfill": "^6.8.0",
     "babel-preset-react-hmre": "^1.1.1",

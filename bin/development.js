@@ -6,7 +6,7 @@ require('babel-core/register')({
     ['babel-plugin-transform-require-ignore', {
       extensions: ['.less', '.css']
     }],
-    ['inline-replace-varibles', {
+    ['inline-replace-variables', {
       __SERVER__: true
     }]
   ]

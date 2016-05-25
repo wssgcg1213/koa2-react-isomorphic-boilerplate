@@ -12,3 +12,4 @@ server.listen(config.port, () => {
   console.log('App started, bind port %d, CTRL + C to terminate', config.port)
 })
 
+export default server

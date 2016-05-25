@@ -40,7 +40,7 @@ module.exports = {
         query: {
           presets: ['react-hmre'],
           plugins: [
-            ["inline-replace-varibles", {
+            ["inline-replace-variables", {
               "__SERVER__": false
             }]
           ]
