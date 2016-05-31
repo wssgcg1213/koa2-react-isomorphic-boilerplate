@@ -52,7 +52,7 @@
     "babel-plugin-define": "^1.0.0",
     "babel-plugin-inline-replace-variables": "^1.0.1",
     "babel-plugin-transform-require-ignore": "^0.0.2",
-    "babel-polyfill": "^6.8.0",
+    "babel-polyfill": "^6.9.0",
     "babel-preset-react-hmre": "^1.1.1",
     "chokidar": "^1.5.0",
     "colors": "^1.1.2",
