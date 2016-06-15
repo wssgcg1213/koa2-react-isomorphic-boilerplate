@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'production'
+
 require('babel-core/register')
 var config = require('./platforms/common/config')
 var webpack = require('webpack')

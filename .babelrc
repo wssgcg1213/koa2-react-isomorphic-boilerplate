@@ -1,9 +1,4 @@
 {
   "presets": ["es2015", "stage-0", "react"],
-  "plugins": ["add-module-exports", "transform-runtime"],
-  "env": {
-    "production": {
-      "optional": ["optimisation", "minification"]
-    }
-  }
+  "plugins": ["add-module-exports", "transform-runtime"]
 }

@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'development'
+
 var webpack = require('webpack')
 var path = require('path')
 var rucksack = require('rucksack-css')

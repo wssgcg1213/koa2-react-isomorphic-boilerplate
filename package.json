@@ -1,11 +1,11 @@
 {
   "name": "koa2-react-isomorphic-boilerplate",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "wssgcg1213",
   "scripts": {
-    "start": "NODE_ENV=development node bin/development.js",
-    "production": "NODE_ENV=production node bin/production.js",
-    "build": "NODE_ENV=production npm run clean && webpack --config webpack.build.js ",
+    "start": "node bin/development.js",
+    "production": "node bin/production.js",
+    "build": "npm run clean && webpack --config webpack.build.js",
     "clean": "rm -rf public/build/ && rm -rf dist/",
     "test": "mocha -u bdd --compilers js:babel-core/register",
     "dev": "npm start"

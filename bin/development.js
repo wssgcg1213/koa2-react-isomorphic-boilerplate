@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+process.env.NODE_ENV = 'development'
 console.log('Waiting for webpacking ...')
 require('babel-polyfill')
 require('babel-core/register')({
