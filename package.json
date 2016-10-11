@@ -36,7 +36,7 @@
     "koa-views": "^5.0.1",
     "koa-webpack-dev-middleware": "^1.2.1",
     "lodash": "^4.11.1",
-    "normalize.css": "^4.1.1",
+    "normalize.css": "^5.0.0",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-redux": "^4.4.5",
