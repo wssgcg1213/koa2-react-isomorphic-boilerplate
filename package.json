@@ -22,7 +22,7 @@
     "co": "^4.6.0",
     "debug": "^2.2.0",
     "ejs": "^2.4.1",
-    "eslint": "^2.9.0",
+    "eslint": "^3.3.0",
     "isomorphic-fetch": "^2.2.1",
     "koa": "^2.0.0",
     "koa-bodyparser": "^2.0.1",
