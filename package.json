@@ -73,7 +73,7 @@
     "mocha": "^3.1.2",
     "null-loader": "^0.1.1",
     "postcss-loader": "^0.9.1",
-    "rucksack-css": "^0.8.6",
+    "rucksack-css": "^0.9.1",
     "should": "^11.1.1",
     "style-loader": "^0.13.1",
     "supertest": "^1.2.0",
