@@ -34,7 +34,7 @@ var devMiddlewareInstance = devMiddleware(compiler, {
   noInfo: true,
   watchOptions: {
     aggregateTimeout: 300,
-    poll: true
+    poll: false
   },
   publicPath: '/build/',
   stats: {
