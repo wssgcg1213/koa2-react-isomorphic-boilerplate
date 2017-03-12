@@ -1,5 +1,7 @@
 # **koa2-react-isomorphic-boilerplate**
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/wssgcg1213/koa2-react-isomorphic-boilerplate.svg)](https://greenkeeper.io/)
+
 keywords: koa2,react,redux,isomorphic app
 
 
